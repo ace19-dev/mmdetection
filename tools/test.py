@@ -19,8 +19,10 @@ from mmdet.models import build_detector
 def parse_args():
     parser = argparse.ArgumentParser(
         description='MMDet test (and eval) a model')
-    parser.add_argument('config', help='test config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument('--config', default='../configs/_base_/default_runtime.py',
+                        help='test config file path')
+    parser.add_argument('--checkpoint', default='../pretrained/epoch_30.pth',
+                        help='checkpoint file')
     parser.add_argument('--out', help='output result file in pickle format')
     parser.add_argument(
         '--fuse-conv-bn',
@@ -41,11 +43,12 @@ def parse_args():
         ' "segm", "proposal" for COCO, and "mAP", "recall" for PASCAL VOC')
     parser.add_argument('--show', action='store_true', help='show results')
     parser.add_argument(
-        '--show-dir', help='directory where painted images will be saved')
+        '--show-dir', default='../pretrained/results',
+        help='directory where painted images will be saved')
     parser.add_argument(
         '--show-score-thr',
         type=float,
-        default=0.3,
+        default=0.5,
         help='score threshold (default: 0.3)')
     parser.add_argument(
         '--gpu-collect',
@@ -69,7 +72,7 @@ def parse_args():
         'format will be kwargs for dataset.evaluate() function (deprecate), '
         'change to --eval-options instead.')
     parser.add_argument(
-        '--eval-options',
+        '--eval-options',   # --format-only --eval-options "jsonfile_prefix=../pretrained/results"
         nargs='+',
         action=DictAction,
         help='custom options for evaluation, the key-value pair in xxx=yyy '
